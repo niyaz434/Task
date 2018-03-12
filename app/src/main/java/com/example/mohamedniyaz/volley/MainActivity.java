@@ -5,6 +5,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +76,23 @@ public class MainActivity extends AppCompatActivity {
 
         SQLiteHelper sqLiteHelper = new SQLiteHelper(this);
         sqLiteHelper.getWritableDatabase();
+
+        final ConnectivityManager connMgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = null;
+        if (connMgr != null) {
+            activeNetworkInfo = connMgr.getActiveNetworkInfo();
+        }
+        if(activeNetworkInfo == null) {
+            ArrayList<Data> hasList = (ArrayList<Data>) sqLiteHelper.getDetails();
+            RecyclerAdapter recyclerAdapter = new RecyclerAdapter(this, hasList);
+            recyclerView.setAdapter(recyclerAdapter);
+            Snackbar snackbar = Snackbar
+                    .make(getWindow().getDecorView().getRootView(), "PLEASE CONNECT TO THE INTERNET", Snackbar.LENGTH_LONG);
+            View sbView  = snackbar.getView();
+            sbView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            snackbar.show();
+            progressBar.setVisibility(View.INVISIBLE);
+        }
 
 
 
