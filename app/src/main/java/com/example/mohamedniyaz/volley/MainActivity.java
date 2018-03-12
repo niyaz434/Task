@@ -86,11 +86,6 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<Data> hasList = (ArrayList<Data>) sqLiteHelper.getDetails();
             RecyclerAdapter recyclerAdapter = new RecyclerAdapter(this, hasList);
             recyclerView.setAdapter(recyclerAdapter);
-            Snackbar snackbar = Snackbar
-                    .make(getWindow().getDecorView().getRootView(), "PLEASE CONNECT TO THE INTERNET", Snackbar.LENGTH_LONG);
-            View sbView  = snackbar.getView();
-            sbView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            snackbar.show();
             progressBar.setVisibility(View.INVISIBLE);
         }
 
